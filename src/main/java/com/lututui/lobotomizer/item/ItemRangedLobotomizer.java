@@ -3,12 +3,11 @@ package com.lututui.lobotomizer.item;
 import java.util.List;
 
 import com.lututui.lobotomizer.LobotomizerMod;
-import net.minecraft.creativetab.CreativeTabs;
+import com.lututui.lobotomizer.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.potion.PotionEffect;
@@ -17,12 +16,11 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class ItemRangedLobotomizer extends Item {
+public class ItemRangedLobotomizer extends ItemBase {
+    public static final String REGISTRY_NAME = "ranged_lobotomizer";
+
     public ItemRangedLobotomizer() {
-        this.setCreativeTab(CreativeTabs.REDSTONE);
-        this.setRegistryName(LobotomizerMod.MODID, "ranged_lobotomizer");
-        this.setUnlocalizedName(this.getRegistryName().toString());
-        this.setMaxStackSize(1);
+        super(REGISTRY_NAME, 1);
     }
 
     @Override
@@ -30,9 +28,7 @@ public class ItemRangedLobotomizer extends Item {
         final ItemStack stack = playerIn.getHeldItem(handIn);
 
         if (playerIn.isSneaking()) {
-            if (!worldIn.isRemote) {
-                stack.setTagCompound(null);
-            }
+            stack.setTagCompound(null);
 
             return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
         }
@@ -42,20 +38,18 @@ public class ItemRangedLobotomizer extends Item {
         }
 
         if (!worldIn.isRemote) {
-            final String targetEntity = stack.getTagCompound().getString("target");
+            final String targetEntity = Util.getTagCompoundSafe(stack).getString("target");
 
             final List<EntityLiving> entitiesInRange = worldIn.getEntitiesWithinAABB(
                     EntityLiving.class,
-                    playerIn.getEntityBoundingBox().grow(5)
+                    playerIn.getEntityBoundingBox().grow(5),
+                    entityLiving -> !entityLiving.isAIDisabled() && entityLiving.getClass().getName().equals(targetEntity)
             );
 
             LobotomizerMod.logger.info("Target entity: " + targetEntity);
 
             for (final EntityLiving e : entitiesInRange) {
                 LobotomizerMod.logger.info("Entity in range: " + e.getClass().getName());
-                if (e.isAIDisabled() || !e.getClass().getName().equals(targetEntity)) {
-                    continue;
-                }
 
                 e.setNoAI(true);
                 e.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100));

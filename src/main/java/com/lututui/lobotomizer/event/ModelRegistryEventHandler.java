@@ -12,6 +12,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ModelRegistryEventHandler {
     @SubscribeEvent
     public static void onModelRegistryEvent(ModelRegistryEvent event) {
-        ModelLoader.setCustomModelResourceLocation(Items.LOBOTOMIZER, 0, new ModelResourceLocation(Items.LOBOTOMIZER.getRegistryName().toString(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(
+                Items.LOBOTOMIZER,
+                0,
+                new ModelResourceLocation(Items.LOBOTOMIZER.getRegistryName().toString(), "inventory")
+        );
     }
 }
