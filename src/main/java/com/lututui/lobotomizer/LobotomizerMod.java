@@ -12,14 +12,10 @@ import org.apache.logging.log4j.Logger;
 public class LobotomizerMod {
     public static final String MODID = "lobotomizer";
     public static final String NAME = "Lobotomizer";
-    public static final String VERSION = "0.1";
+    public static final String VERSION = "1.7.2-0.1";
 
     public static Logger logger;
     private static Random rand = new Random();
-
-    public static Integer nextInt() {
-        return rand.nextInt();
-    }
 
     public static Integer nextInt(int bound) {
         return rand.nextInt(bound);

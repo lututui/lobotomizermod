@@ -1,5 +1,4 @@
-[
-{
+[{
   "modid": "lobotomizer",
   "name": "Lobotomizer Mod",
   "description": "Mess with the entities in your world.",
@@ -12,5 +11,4 @@
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
-}
-]
+}]
