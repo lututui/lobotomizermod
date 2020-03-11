@@ -1,6 +1,12 @@
-package com.lututui.lobotomizer.event;
+package com.lututui.lobotomizer.eventhandler;
 
 import com.lututui.lobotomizer.LobotomizerMod;
+import com.lututui.lobotomizer.Util;
+import com.lututui.lobotomizer.event.EntityChickenDeathEvent;
+import com.lututui.lobotomizer.event.EntityChickenLayEggNextTickEvent;
+import com.lututui.lobotomizer.event.EntityLivingDeathEvent;
+import com.lututui.lobotomizer.event.EntitySheepDeathEvent;
+import com.lututui.lobotomizer.event.EntitySheepMayEatGrassEvent;
 import com.lututui.lobotomizer.world.SavedData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -49,9 +55,9 @@ public class LivingUpdateEventHandler {
         final SavedData savedData = SavedData.get(entityLiving.world);
         assert savedData != null;
 
-        LobotomizerMod.logger.info("Living entity died " + entityLiving.getUniqueID());
+        LobotomizerMod.logger.debug("Living entity died " + entityLiving.getUniqueID());
 
-        if (savedData.hasSilencedEntities()) {
+        if (savedData.isSilenced(entityLiving)) {
             savedData.unsilence(entityLiving);
         }
     }
@@ -67,9 +73,9 @@ public class LivingUpdateEventHandler {
         final SavedData savedData = SavedData.get(chicken.world);
         assert savedData != null;
 
-        LobotomizerMod.logger.info("Chicken died " + chicken.getUniqueID());
+        LobotomizerMod.logger.debug("Chicken died " + chicken.getUniqueID());
 
-        if (savedData.hasUpgradedChickens()) {
+        if (savedData.contains(chicken)) {
             savedData.remove(chicken);
         }
     }
@@ -85,9 +91,9 @@ public class LivingUpdateEventHandler {
         final SavedData savedData = SavedData.get(sheep.world);
         assert savedData != null;
 
-        LobotomizerMod.logger.info("Sheep died " + sheep.getUniqueID());
+        LobotomizerMod.logger.debug("Sheep died " + sheep.getUniqueID());
 
-        if (savedData.hasUpgradedSheep()) {
+        if (savedData.contains(sheep)) {
             savedData.remove(sheep);
         }
     }
@@ -120,8 +126,8 @@ public class LivingUpdateEventHandler {
                 return;
             }
 
-            if (sheep.getGrowingAge() < 0 && LobotomizerMod.nextInt(50) == 0 ||
-                    sheep.getGrowingAge() >= 0 && LobotomizerMod.nextInt(1000) == 0) {
+            if (sheep.getGrowingAge() < 0 && Util.nextInt(50) == 0 ||
+                    sheep.getGrowingAge() >= 0 && Util.nextInt(1000) == 0) {
                 MinecraftForge.EVENT_BUS.post(new EntitySheepMayEatGrassEvent(sheep));
             }
         }
@@ -135,7 +141,11 @@ public class LivingUpdateEventHandler {
             return;
         }
 
-        chicken.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);
+        chicken.playSound(
+                SoundEvents.ENTITY_CHICKEN_EGG,
+                1.0F,
+                (Util.nextFloat() - Util.nextFloat()) * 0.2F + 1.0F
+        );
         chicken.dropItem(Items.EGG, 1);
     }
 
@@ -147,12 +157,6 @@ public class LivingUpdateEventHandler {
             return;
         }
 
-        if (sheep.getSheared()) {
-            sheep.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);
-        }
-        if (sheep.getGrowingAge() < 0) {
-            sheep.playSound(SoundEvents.ENTITY_SHULKER_AMBIENT, 1.0F, 1.0F);
-        }
         sheep.eatGrassBonus();
     }
 }

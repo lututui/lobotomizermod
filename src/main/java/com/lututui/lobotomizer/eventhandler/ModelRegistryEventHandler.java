@@ -1,6 +1,4 @@
-package com.lututui.lobotomizer.event;
-
-import java.util.List;
+package com.lututui.lobotomizer.eventhandler;
 
 import com.lututui.lobotomizer.LobotomizerMod;
 import com.lututui.lobotomizer.init.Items;
@@ -21,7 +19,7 @@ public class ModelRegistryEventHandler {
         );
     }
 
-    private static void register(ItemBase item) {
+    private static void registerItems(ItemBase item) {
         ModelLoader.setCustomModelResourceLocation(
                 item,
                 0,
@@ -31,7 +29,7 @@ public class ModelRegistryEventHandler {
 
     private static void registerAll(ItemBase... itemList) {
         for (final ItemBase item : itemList) {
-            ModelRegistryEventHandler.register(item);
+            ModelRegistryEventHandler.registerItems(item);
         }
     }
 }
