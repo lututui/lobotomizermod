@@ -1,5 +1,6 @@
 package com.lututui.lobotomizer;
 
+import com.lututui.lobotomizer.init.Packets;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -22,5 +23,9 @@ public class LobotomizerMod {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         logger.info("Hello world!");
+
+        Packets.register();
     }
+
+
 }

@@ -3,3 +3,11 @@ item.lobotomizer:ranged_lobotomizer.name=Ranged Lobotomizer
 item.lobotomizer:grassless_wool_addon.name=Grassless Wool Addon
 item.lobotomizer:silence_addon=Silence Addon
 item.lobotomizer:twin_egg_addon=Double Egg Addon
+
+other.lobotomizer.addonMessage.alreadyUpgraded=This entity is already upgraded with this addon
+other.lobotomizer.addonMessage.wrongEntity=This entity cannot take this addon
+other.lobotomizer.toolMessage.invalidEntity=This entity cannot be lobotomized
+other.lobotomizer.toolMessage.alreadyLobotomized=This entity is already lobotomized
+other.lobotomizer.toolMessage.targetClear=Target cleared
+other.lobotomizer.toolMessage.targetAlreadySet=Target already is this type of entity
+other.lobotomizer.toolMessage.setTarget=Target set

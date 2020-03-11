@@ -4,6 +4,7 @@ import com.lututui.lobotomizer.LobotomizerMod;
 import com.lututui.lobotomizer.world.SavedData;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class ItemSilenceAddon extends ItemAddonBase {
     public static final String REGISTRY_NAME = "silence_addon";
@@ -13,12 +14,13 @@ public class ItemSilenceAddon extends ItemAddonBase {
     }
 
     @Override
-    public boolean apply(EntityLivingBase entityLivingBase) {
+    public boolean apply(EntityLivingBase entityLivingBase, EntityPlayer player) {
         final EntityLiving entityLiving = (EntityLiving) entityLivingBase;
         final SavedData savedData = SavedData.get(entityLiving.world);
 
         assert savedData != null;
         if (savedData.isSilenced(entityLiving)) {
+            this.alreadyUpgradedWithAddon(player);
             return false;
         }
 

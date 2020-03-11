@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.lututui.lobotomizer.LobotomizerMod;
 import com.lututui.lobotomizer.Util;
+import com.lututui.lobotomizer.init.Items;
+import com.lututui.lobotomizer.init.Packets;
+import com.lututui.lobotomizer.network.ClearRangedLobotomizerMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,10 +17,15 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@Mod.EventBusSubscriber(modid = LobotomizerMod.MODID)
 public class ItemRangedLobotomizer extends ItemBase {
     public static final String REGISTRY_NAME = "ranged_lobotomizer";
 
@@ -54,8 +62,6 @@ public class ItemRangedLobotomizer extends ItemBase {
                     entityLiving -> !entityLiving.isAIDisabled() && entityLiving.getClass().getName().equals(targetEntity)
             );
 
-            LobotomizerMod.logger.info("Target entity: " + targetEntity);
-
             for (final EntityLiving e : entitiesInRange) {
                 LobotomizerMod.logger.info("Entity in range: " + e.getClass().getName());
 
@@ -69,16 +75,34 @@ public class ItemRangedLobotomizer extends ItemBase {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-        if (!(entity instanceof EntityLiving)) {
-            return super.onLeftClickEntity(stack, player, entity);
-        }
+        if (entity instanceof EntityLiving) {
+            final String newTarget = entity.getClass().getName();
+            final String oldTarget = Util.getTagCompoundSafe(stack).getString("target");
 
-        if (!player.world.isRemote) {
-            stack.setTagInfo("target", new NBTTagString(entity.getClass().getName()));
-
-            LobotomizerMod.logger.info("Target set to " + entity.getClass().getName());
+            if (oldTarget.equals(newTarget)) {
+                player.sendStatusMessage(
+                        new TextComponentTranslation("other.lobotomizer.toolMessage.targetAlreadySet"),
+                        true
+                );
+            } else {
+                stack.setTagInfo("target", new NBTTagString(newTarget));
+                player.sendStatusMessage(
+                        new TextComponentTranslation("other.lobotomizer.toolMessage.setTarget"),
+                        true
+                );
+            }
         }
 
         return true;
+    }
+
+    @SubscribeEvent
+    public static void onLeftClickEmptyAir(PlayerInteractEvent.LeftClickEmpty event) {
+        if (
+                event.getEntityPlayer().isSneaking() &&
+                event.getItemStack().getItem().equals(Items.RANGED_LOBOTOMIZER)
+        ) {
+            Packets.NETWORK_CHANNEL.sendToServer(new ClearRangedLobotomizerMessage());
+        }
     }
 }

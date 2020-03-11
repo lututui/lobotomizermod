@@ -7,6 +7,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 public abstract class ItemAddonBase extends ItemBase {
@@ -28,13 +29,31 @@ public abstract class ItemAddonBase extends ItemBase {
         stack.shrink(1);
     }
 
-    public abstract boolean apply(EntityLivingBase entityLivingBase);
+    public final void alreadyUpgradedWithAddon(EntityPlayer player) {
+        player.sendStatusMessage(
+                new TextComponentTranslation("other.lobotomizer.addonMessage.alreadyUpgraded"),
+                true
+        );
+    }
+
+    public final void wrongEntityForAddon(EntityPlayer player) {
+        player.sendStatusMessage(
+                new TextComponentTranslation("other.lobotomizer.addonMessage.wrongEntity"),
+                true
+        );
+    }
+
+    public abstract boolean apply(EntityLivingBase entityLivingBase, EntityPlayer player);
 
     @Override
     public final boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        if (this.targetEntityClass.isInstance(target) && !target.world.isRemote && this.apply(target)) {
-            this.onSuccessfulApply(playerIn.world, target, stack);
-            return true;
+        if (this.targetEntityClass.isInstance(target)) {
+            if (!target.world.isRemote && this.apply(target, playerIn)) {
+                this.onSuccessfulApply(playerIn.world, target, stack);
+                return true;
+            }
+        } else {
+            this.wrongEntityForAddon(playerIn);
         }
 
         return false;

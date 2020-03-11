@@ -4,6 +4,7 @@ import com.lututui.lobotomizer.LobotomizerMod;
 import com.lututui.lobotomizer.world.SavedData;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class ItemGrasslessWoolAddon extends ItemAddonBase {
     public static final String REGISTRY_NAME = "grassless_wool_addon";
@@ -13,12 +14,13 @@ public class ItemGrasslessWoolAddon extends ItemAddonBase {
     }
 
     @Override
-    public boolean apply(EntityLivingBase entityLivingBase) {
+    public boolean apply(EntityLivingBase entityLivingBase, EntityPlayer player) {
         final EntitySheep sheep = (EntitySheep) entityLivingBase;
         final SavedData savedData = SavedData.get(sheep.world);
 
         assert savedData != null;
         if (savedData.contains(sheep)) {
+            this.alreadyUpgradedWithAddon(player);
             return false;
         }
 
