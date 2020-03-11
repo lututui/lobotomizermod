@@ -15,12 +15,20 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemRangedLobotomizer extends ItemBase {
     public static final String REGISTRY_NAME = "ranged_lobotomizer";
 
     public ItemRangedLobotomizer() {
         super(REGISTRY_NAME, 1);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack) {
+        return true;
     }
 
     @Override

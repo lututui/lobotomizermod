@@ -22,7 +22,7 @@ public class Items {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
-                LOBOTOMIZER, TWIN_EGG_ADDON, GRASSLESS_WOOL_ADDON, RANGED_LOBOTOMIZER, SILENCE_ADDON
+                LOBOTOMIZER, RANGED_LOBOTOMIZER, TWIN_EGG_ADDON, GRASSLESS_WOOL_ADDON, SILENCE_ADDON
         );
     }
 }
