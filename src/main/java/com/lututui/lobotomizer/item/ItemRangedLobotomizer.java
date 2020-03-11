@@ -17,7 +17,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,12 +41,6 @@ public class ItemRangedLobotomizer extends ItemBase {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         final ItemStack stack = playerIn.getHeldItem(handIn);
-
-        if (playerIn.isSneaking()) {
-            stack.setTagCompound(null);
-
-            return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
-        }
 
         if (stack.getTagCompound() == null || !stack.getTagCompound().hasKey("target")) {
             return new ActionResult<>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
@@ -80,16 +73,10 @@ public class ItemRangedLobotomizer extends ItemBase {
             final String oldTarget = Util.getTagCompoundSafe(stack).getString("target");
 
             if (oldTarget.equals(newTarget)) {
-                player.sendStatusMessage(
-                        new TextComponentTranslation("other.lobotomizer.toolMessage.targetAlreadySet"),
-                        true
-                );
+                Util.sendPlayerStatusMessage(player, "other.lobotomizer.toolMessage.targetAlreadySet");
             } else {
                 stack.setTagInfo("target", new NBTTagString(newTarget));
-                player.sendStatusMessage(
-                        new TextComponentTranslation("other.lobotomizer.toolMessage.setTarget"),
-                        true
-                );
+                Util.sendPlayerStatusMessage(player, "other.lobotomizer.toolMessage.setTarget");
             }
         }
 

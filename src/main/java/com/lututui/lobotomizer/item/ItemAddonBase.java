@@ -1,13 +1,11 @@
 package com.lututui.lobotomizer.item;
 
+import com.lututui.lobotomizer.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 public abstract class ItemAddonBase extends ItemBase {
@@ -19,28 +17,16 @@ public abstract class ItemAddonBase extends ItemBase {
     }
 
     private void onSuccessfulApply(World world, Entity target, ItemStack stack) {
-        world.playSound(
-                null,
-                target.getPosition(),
-                SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP,
-                SoundCategory.MASTER,
-                0.8F, 0.9F
-        );
+        Util.playSuccessSound(world, target, stack);
         stack.shrink(1);
     }
 
     public final void alreadyUpgradedWithAddon(EntityPlayer player) {
-        player.sendStatusMessage(
-                new TextComponentTranslation("other.lobotomizer.addonMessage.alreadyUpgraded"),
-                true
-        );
+        Util.sendPlayerStatusMessage(player, "other.lobotomizer.addonMessage.alreadyUpgraded");
     }
 
     public final void wrongEntityForAddon(EntityPlayer player) {
-        player.sendStatusMessage(
-                new TextComponentTranslation("other.lobotomizer.addonMessage.wrongEntity"),
-                true
-        );
+        Util.sendPlayerStatusMessage(player, "other.lobotomizer.addonMessage.wrongEntity");
     }
 
     public abstract boolean apply(EntityLivingBase entityLivingBase, EntityPlayer player);
