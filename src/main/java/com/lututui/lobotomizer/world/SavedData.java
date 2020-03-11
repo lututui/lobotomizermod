@@ -7,7 +7,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.lututui.lobotomizer.LobotomizerMod;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntitySheep;
@@ -29,6 +28,10 @@ public class SavedData extends WorldSavedData {
 
     public SavedData(String s) {
         super(s);
+
+        this.upgradedChickens = new HashSet<>();
+        this.upgradedSheep = new HashSet<>();
+        this.silencedEntities = new HashSet<>();
     }
 
     @Nullable
@@ -49,18 +52,6 @@ public class SavedData extends WorldSavedData {
         }
 
         return savedData;
-    }
-
-    public boolean hasSilencedEntities() {
-        return !(this.silencedEntities == null || this.silencedEntities.isEmpty());
-    }
-
-    public boolean hasUpgradedChickens() {
-        return !(this.upgradedChickens == null || this.upgradedChickens.isEmpty());
-    }
-
-    public boolean hasUpgradedSheep() {
-        return !(this.upgradedSheep == null || this.upgradedSheep.isEmpty());
     }
 
     public void add(EntityChicken chicken) {

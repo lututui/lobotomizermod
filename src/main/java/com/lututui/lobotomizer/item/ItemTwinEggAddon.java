@@ -4,35 +4,27 @@ import com.lututui.lobotomizer.LobotomizerMod;
 import com.lututui.lobotomizer.world.SavedData;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 
-public class ItemTwinEggAddon extends ItemBase {
+public class ItemTwinEggAddon extends ItemAddonBase {
     public static final String REGISTRY_NAME = "twin_egg_addon";
 
     public ItemTwinEggAddon() {
-        super(REGISTRY_NAME);
+        super(REGISTRY_NAME, EntityChicken.class);
     }
 
     @Override
-    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        if (!target.world.isRemote && target instanceof EntityChicken) {
-            final EntityChicken chicken = (EntityChicken) target;
-            final SavedData savedData = SavedData.get(target.world);
+    public boolean apply(EntityLivingBase entityLivingBase) {
+        final EntityChicken chicken = (EntityChicken) entityLivingBase;
+        final SavedData savedData = SavedData.get(chicken.world);
 
-            assert savedData != null;
-            if (savedData.contains(chicken)) {
-                return false;
-            }
-
-            savedData.add(chicken);
-            LobotomizerMod.logger.info("Added chicken with UUID " + chicken.getUniqueID() + " to upgraded set");
-            stack.shrink(1);
-
-            return true;
+        assert savedData != null;
+        if (savedData.contains(chicken)) {
+            return false;
         }
 
-        return false;
+        savedData.add(chicken);
+        LobotomizerMod.logger.info("Added chicken with UUID " + chicken.getUniqueID() + " to upgraded set");
+
+        return true;
     }
 }

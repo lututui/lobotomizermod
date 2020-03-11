@@ -19,5 +19,8 @@ public class Util {
     public static Integer nextInt(int bound) {
         return rand.nextInt(bound);
     }
-    public static Float nextFloat() { return rand.nextFloat(); }
+
+    public static Float nextFloat() {
+        return rand.nextFloat();
+    }
 }
