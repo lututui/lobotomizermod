@@ -6,6 +6,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import static com.lututui.lobotomizer.init.Items.CRAFTING_COMPONENT;
 import static com.lututui.lobotomizer.init.Items.GRASSLESS_WOOL_ADDON;
 import static com.lututui.lobotomizer.init.Items.LOBOTOMIZER;
 import static com.lututui.lobotomizer.init.Items.RANGED_LOBOTOMIZER;
@@ -17,7 +18,8 @@ public class ItemRegistryEvent {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
-                LOBOTOMIZER, RANGED_LOBOTOMIZER, TWIN_EGG_ADDON, GRASSLESS_WOOL_ADDON, SILENCE_ADDON
+                LOBOTOMIZER, RANGED_LOBOTOMIZER,
+                TWIN_EGG_ADDON, GRASSLESS_WOOL_ADDON, SILENCE_ADDON, CRAFTING_COMPONENT
         );
     }
 }

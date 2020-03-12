@@ -1,7 +1,7 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "minecraft:items/record_blocks",
-		"layer1": "lobotomizer:layer/addon_layer"
+		"layer0": "lobotomizer:item/addon_base",
+		"layer1": "minecraft:items/record_blocks"
 	}
 }

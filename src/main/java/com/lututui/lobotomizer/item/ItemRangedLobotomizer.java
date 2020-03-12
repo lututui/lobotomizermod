@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.potion.PotionEffect;
@@ -36,6 +37,11 @@ public class ItemRangedLobotomizer extends ItemBase {
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack stack) {
+        return EnumRarity.EPIC;
     }
 
     @Override
