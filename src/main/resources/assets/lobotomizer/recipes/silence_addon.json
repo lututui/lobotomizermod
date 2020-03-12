@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "record"
+    },
+    {
+      "item": "lobotomizer:addon_base"
+    }
+  ],
+  "result": {
+    "item": "lobotomizer:silence_addon",
+    "count": 1
+  }
+}

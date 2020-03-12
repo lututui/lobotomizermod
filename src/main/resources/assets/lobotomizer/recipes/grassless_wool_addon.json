@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:wheat_seeds"
+    },
+    {
+      "item": "lobotomizer:addon_base"
+    }
+  ],
+  "result": {
+    "item": "lobotomizer:grassless_wool_addon",
+    "count": 1
+  }
+}

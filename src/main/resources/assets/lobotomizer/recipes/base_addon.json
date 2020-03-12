@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "xyx",
+    "yzy",
+    "xyx"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:gold_nugget"
+    },
+    "y": {
+      "item": "minecraft:iron_ingot"
+    },
+    "z": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "result": {
+    "item": "lobotomizer:addon_base",
+    "count": 4
+  }
+}
