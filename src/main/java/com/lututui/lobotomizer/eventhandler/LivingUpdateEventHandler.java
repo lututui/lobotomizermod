@@ -1,7 +1,11 @@
 package com.lututui.lobotomizer.eventhandler;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.lututui.lobotomizer.LobotomizerMod;
 import com.lututui.lobotomizer.Util;
+import com.lututui.lobotomizer.event.BossDeathEvent;
 import com.lututui.lobotomizer.event.EntityChickenDeathEvent;
 import com.lututui.lobotomizer.event.EntityChickenLayEggNextTickEvent;
 import com.lututui.lobotomizer.event.EntityLivingDeathEvent;
@@ -10,15 +14,24 @@ import com.lututui.lobotomizer.event.EntitySheepMayEatGrassEvent;
 import com.lututui.lobotomizer.world.SavedData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import static com.lututui.lobotomizer.init.Items.LOBOTOMIZER;
+import static com.lututui.lobotomizer.init.Items.RANGED_LOBOTOMIZER;
 
 @Mod.EventBusSubscriber(modid = LobotomizerMod.MODID)
 public class LivingUpdateEventHandler {
@@ -26,7 +39,9 @@ public class LivingUpdateEventHandler {
     public static void onLivingEntityDeath(LivingDeathEvent event) {
         if (event instanceof EntitySheepDeathEvent ||
                 event instanceof EntityChickenDeathEvent ||
-                event instanceof EntityLivingDeathEvent) {
+                event instanceof EntityLivingDeathEvent ||
+                event instanceof BossDeathEvent
+        ) {
             return;
         }
 
@@ -42,6 +57,9 @@ public class LivingUpdateEventHandler {
             MinecraftForge.EVENT_BUS.post(new EntityLivingDeathEvent((EntityLiving) entity, event.getSource()));
         }
 
+        if (!entity.isNonBoss()) {
+            MinecraftForge.EVENT_BUS.post(new BossDeathEvent((EntityLivingBase) entity, event.getSource()));
+        }
     }
 
     @SubscribeEvent
@@ -158,5 +176,18 @@ public class LivingUpdateEventHandler {
         }
 
         sheep.eatGrassBonus();
+    }
+
+    @SubscribeEvent
+    public static void onBossDeathEvent(BossDeathEvent event) {
+        final Entity defeater = event.getSource().getImmediateSource();
+
+        if (defeater instanceof EntityPlayer) {
+            final EntityPlayer player = (EntityPlayer) defeater;
+
+            if (player.getHeldItemOffhand().getItem().equals(LOBOTOMIZER)) {
+                player.inventory.offHandInventory.set(0, new ItemStack(RANGED_LOBOTOMIZER));
+            }
+        }
     }
 }

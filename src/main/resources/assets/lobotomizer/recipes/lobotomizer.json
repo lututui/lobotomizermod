@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " y ",
+    "xzx"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:nether_star"
+    },
+    "y": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "z": {
+      "item": "minecraft:dragon_egg"
+    }
+  },
+  "result": {
+    "item": "lobotomizer:lobotomizer",
+    "count": 1
+  }
+}
